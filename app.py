@@ -22,22 +22,22 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* --- ЗАГОЛОВОК І ПІДПИС --- */
+    /* --- ТЕКСТИ --- */
     .title-text {
         text-align: center;
         color: #2c3e50;
         font-family: 'Helvetica', sans-serif;
         font-weight: bold;
         font-size: 2.5rem;
-        margin-top: 10px;
+        margin-top: 5px;
         margin-bottom: 5px;
     }
     
     .subtitle-text {
         text-align: center;
-        color: #666; /* Сірий колір */
+        color: #666;
         font-family: 'Helvetica', sans-serif;
-        font-weight: normal; /* НЕ жирний */
+        font-weight: normal;
         font-size: 1.2rem;
         margin-bottom: 30px;
     }
@@ -47,7 +47,8 @@ st.markdown("""
         display: none;
     }
     [data-testid='stFileUploaderDropzone'] div div::after {
-        content: "Перетягніть файли сюди • Обмеження 200MB • PDF, DOCX";
+        /* ТУТ ЗМІНИЛИ ТЕКСТ (ПРИБРАЛИ 200MB) */
+        content: "Перетягніть файли сюди • PDF, DOCX";
         visibility: visible;
         display: block;
         font-size: 1rem;
@@ -71,7 +72,6 @@ st.markdown("""
     /* --- ПОМАРАНЧЕВА КНОПКА --- */
     .stButton>button {
         width: 100%;
-        /* Помаранчевий градієнт */
         background: linear-gradient(90deg, #FF8C00 0%, #FF4500 100%);
         color: white;
         border-radius: 12px;
@@ -85,15 +85,14 @@ st.markdown("""
     .stButton>button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        /* Трохи світліший при наведенні */
         background: linear-gradient(90deg, #FFA500 0%, #FF6347 100%);
     }
     
-    /* АНІМАЦІЯ */
+    /* --- АНІМАЦІЯ --- */
     .loading-text {
         font-size: 24px;
         font-weight: bold;
-        color: #FF4500; /* Помаранчевий текст */
+        color: #FF4500;
         text-align: center;
         padding: 20px;
         animation: pulse 1.5s infinite;
@@ -102,6 +101,12 @@ st.markdown("""
         0% { opacity: 0.6; }
         50% { opacity: 1; }
         100% { opacity: 0.6; }
+    }
+    
+    /* Центрування зображень всередині колонок */
+    div[data-testid="stImage"] {
+        display: flex;
+        justify-content: center;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -169,16 +174,15 @@ with st.sidebar:
 
 # --- ШАПКА ПО ЦЕНТРУ ---
 
-# 1. Логотип по центру (використовуємо колонки для центрування)
-c_left, c_center, c_right = st.columns([1, 1, 1])
-with c_center:
-    if os.path.exists("logo.png"):
-        # width=200 - оптимальний розмір для центру
-        st.image("logo.png", width=200) 
-    else:
-        st.markdown("<h2 style='text-align: center;'>👔</h2>", unsafe_allow_html=True)
+# Використовуємо 3 колонки, щоб логотип був точно по центру
+c1, c2, c3 = st.columns([1, 1, 1])
 
-# 2. Тексти під логотипом (через HTML класи, які ми прописали в CSS)
+with c2:
+    if os.path.exists("logo.png"):
+        st.image("logo.png", width=200)
+    else:
+        st.markdown("<div style='text-align: center;'><h2>👔</h2></div>", unsafe_allow_html=True)
+
 st.markdown('<h1 class="title-text">ШІ-асистент рекрутера</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle-text">Ваш персональний помічник у пошуку талантів</p>', unsafe_allow_html=True)
 
@@ -217,8 +221,12 @@ with c2:
 
 st.markdown("###")
 
-# Кнопка з новим текстом (стиль помаранчевий через CSS)
-start_btn = st.button("Знайти ідеального кандидата", type="primary")
+# --- КНОПКА ПО ЦЕНТРУ ---
+# Створюємо 3 колонки: порожня - кнопка - порожня. Це центрує кнопку.
+b1, b2, b3 = st.columns([1, 2, 1])
+
+with b2:
+    start_btn = st.button("Знайти ідеального кандидата", type="primary")
 
 if start_btn:
     st.session_state.results_df = None
@@ -322,4 +330,3 @@ if st.session_state.results_df is not None:
         mime="text/csv",
         use_container_width=True
     )
-    
