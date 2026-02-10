@@ -63,19 +63,21 @@ st.markdown("""
         white-space: nowrap;
     }
 
-    /* --- МАГІЯ ЦЕНТРУВАННЯ КНОПКИ --- */
-    /* 1. Знаходимо контейнер кнопки і кажемо йому центрувати все всередині */
+    /* --- ФІНАЛЬНИЙ ФІКС КНОПКИ (MARGIN AUTO) --- */
+    /* 1. Робимо контейнер кнопки на всю ширину */
     div.stButton {
-        display: flex !important;
-        justify-content: center !important; /* Горизонтальний центр */
         width: 100% !important;
+        text-align: center !important;
     }
 
-    /* 2. Сама кнопка: авто-ширина (по тексту) і заборона переносу */
-    div.stButton > button {
-        width: auto !important;    /* Ширина рівно по тексту */
-        min-width: 300px;          /* Але не менше 300px */
-        white-space: nowrap !important; /* Текст ЗАВЖДИ в один рядок */
+    /* 2. Саму кнопку робимо блочним елементом з авто-відступами */
+    div.stButton button {
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: auto !important; /* Ширина по тексту */
+        min-width: 300px;
+        white-space: nowrap !important; /* Текст в один рядок */
         
         background: linear-gradient(90deg, #FF8C00 0%, #FF4500 100%);
         color: white;
@@ -88,7 +90,7 @@ st.markdown("""
         transition: 0.3s;
     }
     
-    div.stButton > button:hover {
+    div.stButton button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         background: linear-gradient(90deg, #FFA500 0%, #FF6347 100%);
@@ -221,13 +223,10 @@ with c2:
 
 st.markdown("###")
 
-# --- КНОПКА ---
-# Використовуємо широку колонку посередині (50% ширини), щоб текст точно вліз.
-# А CSS (рядок 68) подбає про те, щоб кнопка в цій колонці стала по центру.
-b1, b2, b3 = st.columns([1, 2, 1])
-
-with b2:
-    start_btn = st.button("Знайти ідеального кандидата", type="primary")
+# --- КНОПКА (БЕЗ КОЛОНОК - ПРЯМИЙ ПОТІК) ---
+# Ми прибрали st.columns(). Кнопка тепер у загальному потоці.
+# CSS (рядок 68) знайде її і застосує margin: 0 auto, що гарантує центр.
+start_btn = st.button("Знайти ідеального кандидата", type="primary")
 
 if start_btn:
     st.session_state.results_df = None
