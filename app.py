@@ -63,21 +63,32 @@ st.markdown("""
         white-space: nowrap;
     }
 
-    /* СТИЛЬ КНОПКИ */
-    .stButton>button {
-        width: 100%; /* Заповнити центральну колонку повністю */
+    /* --- МАГІЯ ЦЕНТРУВАННЯ КНОПКИ --- */
+    /* 1. Знаходимо контейнер кнопки і кажемо йому центрувати все всередині */
+    div.stButton {
+        display: flex !important;
+        justify-content: center !important; /* Горизонтальний центр */
+        width: 100% !important;
+    }
+
+    /* 2. Сама кнопка: авто-ширина (по тексту) і заборона переносу */
+    div.stButton > button {
+        width: auto !important;    /* Ширина рівно по тексту */
+        min-width: 300px;          /* Але не менше 300px */
+        white-space: nowrap !important; /* Текст ЗАВЖДИ в один рядок */
+        
         background: linear-gradient(90deg, #FF8C00 0%, #FF4500 100%);
         color: white;
         border-radius: 12px;
         font-weight: bold;
-        padding: 12px 24px;
+        padding: 12px 30px;
         font-size: 18px;
         border: none;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: 0.3s;
-        white-space: nowrap; /* Гарантує, що текст буде в один рядок */
     }
-    .stButton>button:hover {
+    
+    div.stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         background: linear-gradient(90deg, #FFA500 0%, #FF6347 100%);
@@ -210,11 +221,10 @@ with c2:
 
 st.markdown("###")
 
-# --- КНОПКА ПО ЦЕНТРУ ---
-# Використовуємо колонки [3, 4, 3].
-# Це золота середина: кнопка буде рівно по центру, 
-# і ширина 40% дозволить тексту бути в один рядок.
-b1, b2, b3 = st.columns([3, 4, 3])
+# --- КНОПКА ---
+# Використовуємо широку колонку посередині (50% ширини), щоб текст точно вліз.
+# А CSS (рядок 68) подбає про те, щоб кнопка в цій колонці стала по центру.
+b1, b2, b3 = st.columns([1, 2, 1])
 
 with b2:
     start_btn = st.button("Знайти ідеального кандидата", type="primary")
