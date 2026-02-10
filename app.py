@@ -63,39 +63,6 @@ st.markdown("""
         white-space: nowrap;
     }
 
-    /* --- ФІНАЛЬНИЙ ФІКС КНОПКИ (MARGIN AUTO) --- */
-    /* 1. Робимо контейнер кнопки на всю ширину */
-    div.stButton {
-        width: 100% !important;
-        text-align: center !important;
-    }
-
-    /* 2. Саму кнопку робимо блочним елементом з авто-відступами */
-    div.stButton button {
-        display: block !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        width: auto !important; /* Ширина по тексту */
-        min-width: 300px;
-        white-space: nowrap !important; /* Текст в один рядок */
-        
-        background: linear-gradient(90deg, #FF8C00 0%, #FF4500 100%);
-        color: white;
-        border-radius: 12px;
-        font-weight: bold;
-        padding: 12px 30px;
-        font-size: 18px;
-        border: none;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: 0.3s;
-    }
-    
-    div.stButton button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        background: linear-gradient(90deg, #FFA500 0%, #FF6347 100%);
-    }
-    
     /* АНІМАЦІЯ */
     .loading-text {
         font-size: 24px;
@@ -223,10 +190,15 @@ with c2:
 
 st.markdown("###")
 
-# --- КНОПКА (БЕЗ КОЛОНОК - ПРЯМИЙ ПОТІК) ---
-# Ми прибрали st.columns(). Кнопка тепер у загальному потоці.
-# CSS (рядок 68) знайде її і застосує margin: 0 auto, що гарантує центр.
-start_btn = st.button("Знайти ідеального кандидата", type="primary")
+# --- КНОПКА ПО ЦЕНТРУ (НОВА СТРАТЕГІЯ: КОЛОНКИ 1-1-1 З РОЗТЯГУВАННЯМ) ---
+# Ми повертаємося до класики, але з хитрістю use_container_width=True
+# Це найбезпечніший спосіб в Streamlit.
+
+col_space1, col_btn, col_space2 = st.columns([1, 1, 1])
+
+with col_btn:
+    # use_container_width=True змушує кнопку зайняти всю ширину центральної колонки
+    start_btn = st.button("Знайти ідеального кандидата", type="primary", use_container_width=True)
 
 if start_btn:
     st.session_state.results_df = None
