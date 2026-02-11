@@ -133,6 +133,21 @@ if 'results_df' not in st.session_state:
 with st.sidebar:
     st.header("🔐 Налаштування")
     api_key = st.text_input("Google API Key", type="password")
+    
+    # --- РЕАЛЬНА ПЕРЕВІРКА КЛЮЧА ---
+    if api_key:
+        with st.spinner("Перевіряю ключ..."):
+            try:
+                # Робимо легкий запит до Google, щоб перевірити доступ
+                test_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
+                response = requests.get(test_url)
+                
+                if response.status_code == 200:
+                    st.success("✅ З'єднання встановлено! Ключ активний.")
+                else:
+                    st.error(f"❌ Ключ не працює. Помилка: {response.status_code}")
+            except:
+                st.error("❌ Помилка мережі. Перевірте інтернет.")
 
 # --- ШАПКА ---
 
@@ -190,14 +205,11 @@ with c2:
 
 st.markdown("###")
 
-# --- КНОПКА ПО ЦЕНТРУ (НОВА СТРАТЕГІЯ: КОЛОНКИ 1-1-1 З РОЗТЯГУВАННЯМ) ---
-# Ми повертаємося до класики, але з хитрістю use_container_width=True
-# Це найбезпечніший спосіб в Streamlit.
-
+# --- КНОПКА ПО ЦЕНТРУ ---
 col_space1, col_btn, col_space2 = st.columns([1, 1, 1])
 
 with col_btn:
-    # use_container_width=True змушує кнопку зайняти всю ширину центральної колонки
+    # use_container_width=True - це те, що ми зафіксували минулого разу
     start_btn = st.button("Знайти ідеального кандидата", type="primary", use_container_width=True)
 
 if start_btn:
