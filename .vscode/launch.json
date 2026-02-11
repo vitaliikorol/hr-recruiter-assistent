@@ -1,18 +1,20 @@
-{{
+{
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run Streamlit App",
+            "name": "▶️ Запустити Streamlit",
             "type": "debugpy",
             "request": "launch",
             "module": "streamlit",
+            "python": "${workspaceFolder}/.venv/bin/python",
             "args": [
                 "run",
                 "${file}",
                 "--server.port=8501"
             ],
             "jinja": true,
-            "justMyCode": true
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
